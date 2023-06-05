@@ -108,12 +108,42 @@ public:
             { "follow stop",    HandleNpcUnFollowCommand,          rbac::RBAC_PERM_COMMAND_NPC_FOLLOW,         Console::No },
             { "evade",          HandleNpcEvadeCommand,             rbac::RBAC_PERM_COMMAND_NPC_EVADE,          Console::No },
             { "showloot",       HandleNpcShowLootCommand,          rbac::RBAC_PERM_COMMAND_NPC_SHOWLOOT,       Console::No },
+
+            // tcrp
+            { "addon",          HandleNpcAddonCommand,             rbac::RBAC_PERM_COMMAND_NPC_ADD,            Console::No },
         };
         static ChatCommandTable commandTable =
         {
             { "npc", npcCommandTable },
         };
         return commandTable;
+    }
+
+    // tcrp custom
+    static bool HandleNpcAddonCommand(ChatHandler* handler, uint32 emote, uint32 standState, uint32 sheathState, uint32 mount, Optional<std::string> aura)
+    {
+        std::string auraString = aura.value_or("");
+        Creature* creature = handler->getSelectedCreature();
+
+        if (!creature)
+        {
+            handler->SendSysMessage(LANG_SELECT_CREATURE);
+            handler->SetSentErrorMessage(true);
+            return false;
+        }
+
+        // providing: guid, mount, StandState, SheathState, emote, auras
+        WorldDatabasePreparedStatement* q = WorldDatabase.GetPreparedStatement(WORLD_REP_CREATURE_ADDON);
+        q->setUInt32(0, creature->GetSpawnId());
+        q->setUInt32(1, mount);
+        q->setUInt32(2, standState);
+        q->setUInt32(3, sheathState);
+        q->setUInt32(4, emote);
+        q->setString(5, auraString);
+        PreparedQueryResult result = WorldDatabase.Query(q);
+
+        handler->PSendSysMessage("NPC aktualizováno!");
+        return true;
     }
 
     //add spawn of creature
