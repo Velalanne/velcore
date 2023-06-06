@@ -38,6 +38,9 @@ EndScriptData */
 #include "WorldSession.h"
 #include <sstream>
 
+// tcrp
+#include "CollectionMgr.h"
+
 using namespace Trinity::ChatCommands;
 
 class character_commandscript : public CommandScript
@@ -73,6 +76,8 @@ public:
             { "rename",        HandleCharacterRenameCommand,         rbac::RBAC_PERM_COMMAND_CHARACTER_RENAME,          Console::Yes },
             { "reputation",    HandleCharacterReputationCommand,     rbac::RBAC_PERM_COMMAND_CHARACTER_REPUTATION,      Console::Yes },
             { "titles",        HandleCharacterTitlesCommand,         rbac::RBAC_PERM_COMMAND_CHARACTER_TITLES,          Console::Yes },
+            { "appearance",    HandleCharacterAppearanceAddCommand,         rbac::RBAC_PERM_COMMAND_CHARACTER_CUSTOMIZE,       Console::No },
+            { "appearance all",HandleCharacterAppearanceAddAllCommand,         rbac::RBAC_PERM_COMMAND_CHARACTER_CUSTOMIZE,       Console::No },
         };
 
         static ChatCommandTable commandTable =
@@ -82,6 +87,29 @@ public:
             { "pdump", pdumpCommandTable },
         };
         return commandTable;
+    }
+
+    static bool HandleCharacterAppearanceAddCommand(ChatHandler* handler, uint32 itemId)
+    {
+        handler->GetSession()->GetCollectionMgr()->AddItemAppearance(itemId);
+        return true;
+    }
+
+    static bool HandleCharacterAppearanceAddAllCommand(ChatHandler* handler, uint32 level)
+    {
+        // Search for characters that have war mode enabled and played during the last week
+        CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_VEL_APPEARANCES);
+        stmt->setUInt32(0, level);
+        if (PreparedQueryResult result = CharacterDatabase.Query(stmt))
+        {
+            do
+            {
+                Field* fields = result->Fetch();
+                uint32 itemId = fields[1].GetUInt32();
+                handler->GetSession()->GetCollectionMgr()->AddItemAppearance(itemId);
+            } while (result->NextRow());
+        }
+        return true;
     }
 
     // Stores informations about a deleted character
