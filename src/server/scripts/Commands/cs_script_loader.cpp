@@ -59,6 +59,9 @@ void AddSC_ticket_commandscript();
 void AddSC_titles_commandscript();
 void AddSC_wp_commandscript();
 
+// vel
+void AddSC_port_commandscript();
+
 // The name of this function should match:
 // void Add${NameOfDirectory}Scripts()
 void AddCommandsScripts()
@@ -105,4 +108,7 @@ void AddCommandsScripts()
     AddSC_ticket_commandscript();
     AddSC_titles_commandscript();
     AddSC_wp_commandscript();
+
+    // vel
+    AddSC_port_commandscript();
 }

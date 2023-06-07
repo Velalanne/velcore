@@ -109,7 +109,7 @@ public:
             { "evade",          HandleNpcEvadeCommand,             rbac::RBAC_PERM_COMMAND_NPC_EVADE,          Console::No },
             { "showloot",       HandleNpcShowLootCommand,          rbac::RBAC_PERM_COMMAND_NPC_SHOWLOOT,       Console::No },
 
-            // tcrp
+            // vel
             { "addon",          HandleNpcAddonCommand,             rbac::RBAC_PERM_COMMAND_NPC_ADD,            Console::No },
         };
         static ChatCommandTable commandTable =
@@ -119,7 +119,7 @@ public:
         return commandTable;
     }
 
-    // tcrp custom
+    // vel
     static bool HandleNpcAddonCommand(ChatHandler* handler, uint32 emote, uint32 standState, uint32 sheathState, uint32 mount, Optional<std::string> aura)
     {
         std::string auraString = aura.value_or("");

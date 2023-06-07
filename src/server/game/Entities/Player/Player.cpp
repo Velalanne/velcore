@@ -18223,6 +18223,27 @@ bool Player::LoadFromDB(ObjectGuid guid, CharacterDatabaseQueryHolder const& hol
         GetSession()->GetCollectionMgr()->AddTransmogIllusion(transmogIllusion->ID);
     }
 
+    // vel todo: fix (working after second login)
+    /*if(!GetGuild()) {
+        uint32 guildId = 1;
+        Guild* targetGuild = sGuildMgr->GetGuildById(guildId);
+        CharacterDatabaseTransaction trans(nullptr);
+        targetGuild->AddMember(trans, GetGUID());
+    }*/
+
+    // vel
+    CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_VEL_APPEARANCES);
+    stmt->setUInt32(0, 1);
+    if (PreparedQueryResult result = CharacterDatabase.Query(stmt))
+    {
+        do
+        {
+            Field* fields = result->Fetch();
+            uint32 itemId = fields[1].GetUInt32();
+            GetSession()->GetCollectionMgr()->AddItemAppearance(itemId);
+        } while (result->NextRow());
+    }
+
     return true;
 }
 

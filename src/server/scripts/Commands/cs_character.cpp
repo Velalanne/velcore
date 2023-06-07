@@ -38,7 +38,7 @@ EndScriptData */
 #include "WorldSession.h"
 #include <sstream>
 
-// tcrp
+// vel
 #include "CollectionMgr.h"
 
 using namespace Trinity::ChatCommands;
@@ -97,7 +97,6 @@ public:
 
     static bool HandleCharacterAppearanceAddAllCommand(ChatHandler* handler, uint32 level)
     {
-        // Search for characters that have war mode enabled and played during the last week
         CharacterDatabasePreparedStatement* stmt = CharacterDatabase.GetPreparedStatement(CHAR_SEL_VEL_APPEARANCES);
         stmt->setUInt32(0, level);
         if (PreparedQueryResult result = CharacterDatabase.Query(stmt))

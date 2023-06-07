@@ -645,7 +645,7 @@ enum CharacterDatabaseStatements : uint32
     CHAR_DEL_INSTANCE,
     CHAR_INS_INSTANCE,
 
-    // tcrp
+    // vel
     CHAR_SEL_VEL_APPEARANCES,
 
     MAX_CHARACTERDATABASE_STATEMENTS

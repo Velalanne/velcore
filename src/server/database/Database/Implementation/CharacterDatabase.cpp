@@ -778,7 +778,7 @@ void CharacterDatabaseConnection::DoPrepareStatements()
     PrepareStatement(CHAR_DEL_INSTANCE, "DELETE FROM instance WHERE instanceId = ?", CONNECTION_ASYNC);
     PrepareStatement(CHAR_INS_INSTANCE, "INSERT INTO instance (instanceId, data, completedEncountersMask, entranceWorldSafeLocId) VALUES (?, ?, ?, ?)", CONNECTION_ASYNC);
 
-    // tcrp
+    // vel
     PrepareStatement(CHAR_SEL_VEL_APPEARANCES, "SELECT * FROM vel_appearances WHERE level = ?", CONNECTION_SYNCH);
 }
 
